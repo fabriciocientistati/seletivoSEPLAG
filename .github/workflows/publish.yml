@@ -1,45 +1,35 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2821
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\froman\fcharset0 Times-Roman;}
-{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
-{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\deftab720
-\pard\pardeftab720\sa240\partightenfactor0
+name: Publish Docker image
 
-\f0\fs24 \cf0 \expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 name: Publish Docker image\
-\
-on:\
-  push:\
-    branches: ['main']\
-\
-jobs:\
-  build-and-push-image:\
-    runs-on: ubuntu-latest\
-    permissions:\
-      contents: read\
-      packages: write\
-\
-    steps:\
-      - name: Checkout repository\
-        uses: actions/checkout@v4\
-\
-      - name: Log in to Docker Hub\
-        uses: docker/login-action@v3\
-        with:\
-          username: $\{\{ secrets.DOCKER_USERNAME \}\}\
-          password: $\{\{ secrets.DOCKER_PASSWORD \}\}\
-\
-      - name: Extract version from Dockerfile\
-        id: version\
-        run: echo "VERSION=$(grep -oP '(?<=VERSION=)[^ ]+' Dockerfile || echo 'latest')" >> $GITHUB_ENV\
-\
-      - name: Build and push Docker image\
-        uses: docker/build-push-action@v5\
-        with:\
-          context: .\
-          push: true\
-          tags: |\
-            fabriciocientistatidesenv/docker-api:$\{\{ env.VERSION \}\}\
-            fabriciocientistatidesenv/docker-api:latest\
-}
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Extract version from Dockerfile
+        id: version
+        run: echo "VERSION=$(grep -oP '(?<=VERSION=)[^ ]+' Dockerfile || echo 'latest')" >> $GITHUB_ENV
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            fabriciocientistatidesenv/docker-api:${{ env.VERSION }}
+            fabriciocientistatidesenv/docker-api:latest
