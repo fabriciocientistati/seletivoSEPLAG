@@ -11,9 +11,9 @@ services:
     depends_on:
       - db
     environment:
-      - DATABASE_URL=jdbc:postgresql://db:5432/Servidores
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=postgres
+      DATABASE_URL: jdbc:postgresql://db:5432/Servidores
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: 615712
 
   db:
     image: postgres:latest
