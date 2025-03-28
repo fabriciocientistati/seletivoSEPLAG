@@ -11,22 +11,9 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: jdbc:postgresql://db:5432/Servidores
-      DATABASE_USER: postgres
-      DATABASE_PASSWORD: 615712
-
-  db:
-    image: postgres:latest
-    container_name: postgres_db_container
-    restart: always
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 615712
-      POSTGRES_DB: Servidores
-    volumes:
-      - pg_data:/var/lib/postgresql/data
+      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_USER={DATABASE_USER}
+      - DATABASE_PASSWORD={DATABASE_PASSWORD}
 
 volumes:
   pg_data:
